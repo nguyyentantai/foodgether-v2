@@ -20,7 +20,6 @@ jobs:
   test:
     docker:
       - image: cimg/node:16.10
-    parallelism: 2
     resource_class: small
     working_directory: ~/project/core
     steps:
@@ -34,17 +33,13 @@ jobs:
   build:
     docker:
       - image: cimg/node:16.10
-    resource_class: medium
+    resource_class: small``
     working_directory: ~/project/core
     steps:
       - checkout:
           path: ~/project
       - node/install-packages:
-          app-dir: ~/project/core
           pkg-manager: yarn
-      - run:
-          name: install packages
-          command: cd core && yarn
       - run:
           name: build
           command: cd core && yarn build
@@ -52,6 +47,6 @@ jobs:
 workflows:
   ci:
     jobs:
-      # - build
+      - build
       - test
-      # - lint
+      - lint
