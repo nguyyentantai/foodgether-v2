@@ -1,0 +1,48 @@
+{
+  "name": "foodgether-core",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "yarn sync:prisma && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "sync:prisma": "shx cp -rf ../prisma . && prisma db push && prisma generate",
+    "postinstall": "sync:prisma && prisma db push",
+    "format": "yarn prettier --write ."
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^2.2.6",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@prisma/client": "^4.2.1",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cookie": "^0.5.1",
+    "@types/jsonwebtoken": "^8.5.8",
+    "bcryptjs": "^2.4.3",
+    "cookie": "^0.5.0",
+    "dayjs": "^1.11.5",
+    "formik": "^2.2.9",
+    "framer-motion": "^6",
+    "jsonwebtoken": "^8.5.1",
+    "next": "12.2.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "zod": "^3.18.0",
+    "zod-formik-adapter": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "18.7.2",
+    "@types/react": "18.0.17",
+    "@types/react-dom": "18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "eslint": "8.21.0",
+    "eslint-config-next": "12.2.5",
+    "eslint-config-prettier": "^8.5.0",
+    "husky": "^8.0.1",
+    "prettier": "^2.7.1",
+    "prisma": "^4.2.1",
+    "shx": "^0.3.4",
+    "typescript": "4.7.4"
+  }
+}

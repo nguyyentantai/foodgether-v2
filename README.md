@@ -1,1 +1,2 @@
-# foodgether-v2
+# foodgether2
+Foodgether but Pro Max
