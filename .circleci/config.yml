@@ -1,0 +1,57 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@4.7
+
+jobs:
+  lint:
+    docker:
+      - image: cimg/node:16.10
+    resource_class: small
+    working_directory: ~/project/core
+    steps:
+      - checkout:
+          path: ~/project
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: lint
+          command: yarn lint
+  test:
+    docker:
+      - image: cimg/node:16.10
+    parallelism: 2
+    resource_class: small
+    working_directory: ~/project/core
+    steps:
+      - checkout:
+          path: ~/project
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: test
+          command: yarn test
+  build:
+    docker:
+      - image: cimg/node:16.10
+    resource_class: medium
+    working_directory: ~/project/core
+    steps:
+      - checkout:
+          path: ~/project
+      - node/install-packages:
+          app-dir: ~/project/core
+          pkg-manager: yarn
+      - run:
+          name: install packages
+          command: cd core && yarn
+      - run:
+          name: build
+          command: cd core && yarn build
+
+workflows:
+  ci:
+    jobs:
+      # - build
+      - test
+      # - lint

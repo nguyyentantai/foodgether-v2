@@ -9,7 +9,8 @@
     "lint": "next lint",
     "sync:prisma": "shx cp -rf ../prisma . && prisma db push && prisma generate",
     "postinstall": "yarn sync:prisma && prisma db push",
-    "format": "yarn prettier --write ."
+    "format": "yarn prettier --write .",
+    "test": "yarn jest"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.2.6",
@@ -32,6 +33,7 @@
     "zod-formik-adapter": "^1.1.1"
   },
   "devDependencies": {
+    "@types/jest": "^28.1.6",
     "@types/node": "18.7.2",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
@@ -40,9 +42,11 @@
     "eslint-config-next": "12.2.5",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.1",
+    "jest": "^28.1.3",
     "prettier": "^2.7.1",
     "prisma": "^4.2.1",
     "shx": "^0.3.4",
+    "ts-jest": "^28.0.7",
     "typescript": "4.7.4"
   }
 }
