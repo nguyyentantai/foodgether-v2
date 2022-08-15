@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../../libs/config'
 import { UserClaim, verifyTokenWithDb } from '../../libs/auth'
 
@@ -15,7 +14,7 @@ export default function handler(
 ) {
   const { Authorization: token } = req.cookies
   if (!token) {
-    return res.status(401).json({})
+    return res.status(401).json({ message: 'Authorization token is missing' })
   }
   if (!JWT_SECRET) {
     console.error('JWT_SECRET is not defined')

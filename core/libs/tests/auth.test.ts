@@ -1,5 +1,5 @@
 import { ZodError } from 'zod'
-import { loginSchema } from '.'
+import { loginSchema } from '../auth'
 
 describe('LIBS_AUTHENTICATION', () => {
   it('LOGIN_SCHEMA_AS_EXPECTED', () => {
