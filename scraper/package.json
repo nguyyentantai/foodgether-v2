@@ -26,7 +26,7 @@
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
     "start": "node dist/index.js",
     "build": "npx tsc",
-    "sync:prisma": "shx cp -rf ../prisma . && prisma db push && prisma generate",
-    "postinstall": "yarn sync:prisma && prisma db push"
+    "sync:prisma": "prisma db push && prisma generate",
+    "postinstall": "yarn sync:prisma"
   }
 }
