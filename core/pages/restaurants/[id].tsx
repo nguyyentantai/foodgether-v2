@@ -16,7 +16,7 @@ import {
   getIdPathForRestaurant,
   getRestaurantFromId,
 } from '../../libs/db/restaurant'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const menuIds = await getIdPathForRestaurant()
@@ -55,6 +55,13 @@ type RestaurantProps = {
 
 const Restaurant: NextPage<RestaurantProps> = ({ restaurant }) => {
   const [isHydrated, setHydrated] = useState(false)
+  useEffect(() => {
+    fetch('/api/restaurants/a')
+      .then(async (result) => {
+        console.log(await result.json())
+      })
+      .catch((err) => console.log(err))
+  })
   if (!restaurant) {
     return <div>Don&apos;t have id yet</div>
   }
