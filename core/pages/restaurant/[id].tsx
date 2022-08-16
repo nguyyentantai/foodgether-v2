@@ -1,4 +1,15 @@
-import { Box, Flex, Grid, GridItem, Heading, Stack } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Spacer,
+  Spinner,
+  Stack,
+} from '@chakra-ui/react'
 import { Prisma } from '@prisma/client'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
@@ -8,6 +19,7 @@ import {
   getIdPathForRestaurant,
   getRestaurantFromId,
 } from '../../libs/db/restaurant'
+import { useState } from 'react'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const menuIds = await getIdPathForRestaurant()
@@ -45,21 +57,35 @@ type RestaurantProps = {
 }
 
 const Restaurant: NextPage<RestaurantProps> = ({ restaurant }) => {
+  const [isHydrated, setHydrated] = useState(false)
   if (!restaurant) {
     return <div>Don&apos;t have id yet</div>
   }
   const title = `Foodgether for ${restaurant.name}`
   const restaurantCover = restaurant.photos[restaurant.photos.length - 1]
   return (
-    <main>
+    <Box height="100%">
       <Head>
         <title>{title}</title>
         <meta name="description" content="Foodgether restaurant page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box p="2">
-        <Stack>
-          <Grid templateColumns="repeat(3, 1fr)" h="300px">
+      <Box p="2" height="100%">
+        <Flex direction="column" height="100%" gap="2">
+          {!isHydrated && (
+            <Flex
+              backgroundColor="orange.200"
+              direction="row"
+              gap="2"
+              height="10"
+              alignItems="center"
+              px="2"
+            >
+              <Spinner />
+              You are viewing a cached version of this restaurant
+            </Flex>
+          )}
+          <Grid templateColumns="repeat(3, 1fr)" h="fit-content">
             <GridItem colSpan={[3, null, 1]}>
               <Image
                 src={restaurantCover.value}
@@ -73,9 +99,9 @@ const Restaurant: NextPage<RestaurantProps> = ({ restaurant }) => {
               </Stack>
             </GridItem>
           </Grid>
-        </Stack>
+        </Flex>
       </Box>
-    </main>
+    </Box>
   )
 }
 
