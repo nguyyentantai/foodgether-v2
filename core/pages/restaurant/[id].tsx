@@ -1,12 +1,9 @@
 import {
-  Alert,
-  AlertIcon,
   Box,
   Flex,
   Grid,
   GridItem,
   Heading,
-  Spacer,
   Spinner,
   Stack,
 } from '@chakra-ui/react'
@@ -63,6 +60,7 @@ const Restaurant: NextPage<RestaurantProps> = ({ restaurant }) => {
   }
   const title = `Foodgether for ${restaurant.name}`
   const restaurantCover = restaurant.photos[restaurant.photos.length - 1]
+  const restaurantCoverAlt = `foodgether ${restaurant.name} cover photo`
   return (
     <Box height="100%">
       <Head>
@@ -91,6 +89,7 @@ const Restaurant: NextPage<RestaurantProps> = ({ restaurant }) => {
                 src={restaurantCover.value}
                 height={restaurantCover.height}
                 width={restaurantCover.width}
+                alt={restaurantCoverAlt}
               />
             </GridItem>
             <GridItem colSpan={[3, null, 2]}>
