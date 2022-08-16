@@ -61,7 +61,7 @@ const Restaurant: NextPage<RestaurantProps> = ({ restaurant }) => {
         console.log(await result.json())
       })
       .catch((err) => console.log(err))
-  })
+  }, [])
   if (!restaurant) {
     return <div>Don&apos;t have id yet</div>
   }
