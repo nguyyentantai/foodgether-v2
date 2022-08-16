@@ -4,6 +4,7 @@ import { Box, ChakraProvider } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { UserContext, userContextInitialValue } from '../libs/context/user'
 import useAuth from '../libs/data/auth'
+import Header from '../libs/components/header'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState(userContextInitialValue)
@@ -26,6 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ChakraProvider>
       <UserContext.Provider value={{ user, setUser }}>
         <Box marginX="12" height="100%">
+          <Header />
           <Component {...pageProps} />
         </Box>
       </UserContext.Provider>
