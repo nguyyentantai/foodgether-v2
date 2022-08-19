@@ -11,25 +11,34 @@ jobs:
       preview_url: ${{ steps.waitForVercelPreviewDeployment.outputs.url }}
     steps:
       - name: Wait for Vercel preview deployment to be ready
-        uses: patrickedqvist/wait-for-vercel-preview@1.2.0
+        uses: patrickedqvist/wait-for-vercel-preview@v1.2.0
         id: waitForVercelPreviewDeployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           max_timeout: 600
   test_e2e:
-    needs: tests_setup
+    needs: test_setup
     name: Playwright tests
     timeout-minutes: 5
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./core
     steps:
       - name: Prepare testing env
         uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
-      - run: yarn ci
+      - run: yarn
+      - run: yarn sync:prisma
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - run: npx playwright install --with-deps
       - name: Run tests
         run: yarn test:e2e
         env:
           PLAYWRIGHT_TEST_BASE_URL: ${{ needs.test_setup.outputs.preview_url }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          SCRAPER_API: ${{ secrets.SCRAPER_API }}
