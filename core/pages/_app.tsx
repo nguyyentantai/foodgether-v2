@@ -1,9 +1,10 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { Box, ChakraProvider } from '@chakra-ui/react'
+import { Box, ChakraProvider, Flex } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { UserContext, userContextInitialValue } from '../libs/context/user'
 import useAuth from '../libs/data/auth'
+import Header from '../libs/components/header'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState(userContextInitialValue)
@@ -25,9 +26,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider>
       <UserContext.Provider value={{ user, setUser }}>
-        <Box marginX="12" height="100%">
-          <Component {...pageProps} />
-        </Box>
+        <Flex marginX="12" height="100%" direction="column">
+          <Header />
+          <Box flex="1">
+            <Component {...pageProps} />
+          </Box>
+        </Flex>
       </UserContext.Provider>
     </ChakraProvider>
   )
