@@ -5,23 +5,30 @@ import { useEffect, useState } from 'react'
 import { userContext, userContextInitialValue } from '../libs/context/user'
 import useAuth from '../libs/data/auth'
 import Header from '../libs/components/header'
+import * as Sentry from '@sentry/nextjs'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState(userContextInitialValue)
-  const { fetchedUser, loading, loggedOut } = useAuth()
+  const { authResponse, loading, loggedOut } = useAuth()
+  useEffect(() => {
+    Sentry.setUser({
+      phoneNumber: user.phoneNumber === '' ? 'anonymous' : user.phoneNumber,
+      id: user.id === '' ? 'anonymous' : user.id,
+    })
+  }, [user])
   useEffect(() => {
     if (loading) {
       setUser((user) => ({ ...user, isLoading: true }))
       return
     }
-    if (fetchedUser) {
-      setUser((user) => ({ ...user, ...fetchedUser, isLoading: false }))
-      return
-    }
     if (loggedOut) {
       setUser({ ...userContextInitialValue })
+      return
     }
-  }, [fetchedUser, loading, loggedOut])
+    if (authResponse) {
+      setUser((user) => ({ ...user, ...authResponse, isLoading: false }))
+    }
+  }, [authResponse, loading, loggedOut])
 
   return (
     <ChakraProvider>
