@@ -1,34 +1,45 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { Box, ChakraProvider } from '@chakra-ui/react'
+import { Box, ChakraProvider, Flex } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { UserContext, userContextInitialValue } from '../libs/context/user'
+import { userContext, userContextInitialValue } from '../libs/context/user'
 import useAuth from '../libs/data/auth'
+import Header from '../libs/components/header'
+import * as Sentry from '@sentry/nextjs'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState(userContextInitialValue)
-  const { fetchedUser, loading, loggedOut } = useAuth()
+  const { authResponse, loading, loggedOut } = useAuth()
+  useEffect(() => {
+    Sentry.setUser({
+      phoneNumber: user.phoneNumber === '' ? 'anonymous' : user.phoneNumber,
+      id: user.id === '' ? 'anonymous' : user.id,
+    })
+  }, [user])
   useEffect(() => {
     if (loading) {
       setUser((user) => ({ ...user, isLoading: true }))
-      return
-    }
-    if (fetchedUser) {
-      setUser((user) => ({ ...user, ...fetchedUser, isLoading: false }))
       return
     }
     if (loggedOut) {
       setUser({ ...userContextInitialValue })
       return
     }
-  }, [fetchedUser, loading, loggedOut])
+    if (authResponse) {
+      setUser((user) => ({ ...user, ...authResponse, isLoading: false }))
+    }
+  }, [authResponse, loading, loggedOut])
+
   return (
     <ChakraProvider>
-      <UserContext.Provider value={{ user, setUser }}>
-        <Box marginX="12" height="100%">
-          <Component {...pageProps} />
-        </Box>
-      </UserContext.Provider>
+      <userContext.Provider value={{ user, setUser }}>
+        <Flex marginX="12" height="100%" direction="column">
+          <Header />
+          <Box flex="1">
+            <Component {...pageProps} />
+          </Box>
+        </Flex>
+      </userContext.Provider>
     </ChakraProvider>
   )
 }
