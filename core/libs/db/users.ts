@@ -21,8 +21,13 @@ export const findUserByPhone = async (phoneNumber: string) => {
   return user
 }
 
-export const createUser = async (name: string, phoneNumber: string, pin: string) => {
+export const createUser = async (
+  name: string,
+  phoneNumber: string,
+  pin: string
+) => {
+  const hashPin = await bcrypt.hash(pin, 5)
   return prisma.user.create({
-    data: { name, phoneNumber, pin: bcrypt.hashSync(pin) }
+    data: { name, phoneNumber, pin: hashPin },
   })
 }

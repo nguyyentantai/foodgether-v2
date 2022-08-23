@@ -18,11 +18,8 @@ export const loginSchema = z.object({
 })
 
 export const hideUserData = (user: User) => {
-  const data: Partial<User> = user
-  delete data.pin
-  delete data.createdAt
-  delete data.updatedAt
-  return data
+  const { pin: _, createdAt, updatedAt, ...userInfo } = user
+  return userInfo
 }
 
 export type HiddenUserData = ReturnType<typeof hideUserData>

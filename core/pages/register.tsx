@@ -62,7 +62,9 @@ const Register: NextPage = () => {
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <form onSubmit={handleSubmit}>
-        <FormControl isInvalid={!!errors.name || !!errors.phoneNumber || !!errors.pin}>
+        <FormControl
+          isInvalid={!!errors.name || !!errors.phoneNumber || !!errors.pin}
+        >
           <Box mb="6">
             <FormLabel htmlFor="name">Your Name</FormLabel>
             <Input
@@ -77,9 +79,7 @@ const Register: NextPage = () => {
               isInvalid={!!errors.name && !!touched.name}
               errorBorderColor="red.300"
             />
-            <FormErrorMessage>
-              {touched.name && errors.name}
-            </FormErrorMessage>
+            <FormErrorMessage>{touched.name && errors.name}</FormErrorMessage>
           </Box>
           <Box mb="6">
             <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
